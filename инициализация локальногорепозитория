@@ -1,0 +1,4 @@
+     git init  # Инициализация репозитория
+     git add inspire.py  # Добавьте ваш файл
+     git commit -m "Initial commit"  # Создайте первый коммит
+     
