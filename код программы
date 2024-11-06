@@ -1,0 +1,31 @@
+import tkinter as tk
+import random
+
+   # Список мотивационных предложений
+   quotes = [
+       "Вы можете все, что хотите.",
+       "Не бойтесь делать ошибки.",
+       "Каждый день — это новая возможность.",
+       "Вы сильнее, чем думаете.",
+       "Успех — это результат упорства."
+   ]
+
+   # Функция для генерации случайного мотивационного предложения
+   def generate_quote():
+       quote = random.choice(quotes)
+       quote_label.config(text=quote)
+
+   # Создание основного окна приложения
+   root = tk.Tk()
+   root.title("INSPIRE")
+
+   # Создание метки для отображения цитаты
+   quote_label = tk.Label(root, text="Нажмите кнопку для получения мотивации!", wraplength=300)
+   quote_label.pack(pady=20)
+
+   # Создание кнопки для генерации цитаты
+   generate_button = tk.Button(root, text="Получить мотивацию", command=generate_quote)
+   generate_button.pack(pady=10)
+
+   # Запуск основного цикла приложения
+   root.mainloop()
