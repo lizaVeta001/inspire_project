@@ -1,61 +1,46 @@
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
+#include <QApplication>
+#include <QPushButton>
+#include <QLabel>
+#include <QVBoxLayout>
+#include <QWidget>
 #include <vector>
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include <QRandomGenerator>
 
-int main() {
-    // Инициализация генератора случайных чисел
-    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+// Мотивационные цитаты (добавьте больше!)
+std::vector<std::string> quotes = {
+    "Вы сильнее, чем вы думаете!",
+    "Верьте в себя, и у вас всё получится!",
+    "Каждый день — это новый шанс!",
+    "Не сдавайтесь, даже если трудно!",
+    "Вы способны на большее, чем вы себе представляете!",
+    "Ваши усилия обязательно окупятся!",
+    "У вас есть все, что нужно для успеха!",
+    "Не бойтесь рисковать, это того стоит!",
+    "Вы — удивительный человек, цените себя!",
+    "Сегодняшние трудности — это завтрашние победы!"
+};
 
-    // Мотивационные предложения
-    std::vector<std::string> quotes = {
-        "Вы способны на большее, чем думаете.",
-        "Каждый день — это новая возможность.",
-        "Не бойтесь делать ошибки, они — ваши учителя.",
-        "Успех — это сумма маленьких усилий.",
-        "Сделайте сегодня то, что другие не хотят, завтра вы будете жить так, как другие не могут.",
-        "Верьте в себя и все станет возможным.",
-        "Ваши мечты не имеют срока годности. Действуйте сейчас.",
-        "Вы — автор своей жизни. Не позволяйте никому другому писать сценарий."
-    };
+int main(int argc, char *argv[]) {
+    QApplication app(argc, argv);
+    QWidget window;
+    window.setWindowTitle("INSPIRE");
 
-    // Создание окна
-    sf::RenderWindow window(sf::VideoMode(800, 600), "INSPIRE - Motivational Quotes");
+    QLabel* label = new QLabel("Нажмите кнопку для мотивации!");
+    QPushButton* button = new QPushButton("Получить мотивацию!");
 
-    // Установка шрифта
-    sf::Font font;
-    if (!font.loadFromFile("arial.ttf")) { // Убедитесь, что файл шрифта находится в той же папке
-        return -1; // Ошибка загрузки шрифта
-    }
+    QObject::connect(button, &QPushButton::clicked, [&]() {
+        int randomIndex = QRandomGenerator::global()->bounded(quotes.size());
+        label->setText(quotes[randomIndex]);
+    });
 
-    sf::Text text("", font, 30);
-    text.setFillColor(sf::Color::White);
-    text.setPosition(50, 250); // Позиция текста
+    QVBoxLayout* layout = new QVBoxLayout;
+    layout->addWidget(button);
+    layout->addWidget(label);
+    window.setLayout(layout);
 
-    // Основной цикл программы
-    while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.close();
-
-            // Проверка на клик мыши
-            if (event.type == sf::Event::MouseButtonPressed) {
-                if (event.mouseButton.button == sf::Mouse::Left) {
-                    // Генерация случайного мотивационного предложения
-                    int randomIndex = std::rand() % quotes.size();
-                    text.setString(quotes[randomIndex]);
-                }
-            }
-        }
-
-        // Очистка окна
-        window.clear(sf::Color::Black);
-        window.draw(text); // Рисуем текст
-        window.display(); // Отображаем содержимое окна
-    }
-
-    return 0;
+    window.show();
+    return app.exec();
 }
